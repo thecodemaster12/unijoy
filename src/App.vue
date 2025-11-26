@@ -1,8 +1,15 @@
 <script setup>
+import Header from './components/Header.vue'
+import Main from './components/Main.vue'
+import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <h2>App</h2>
+  <div class="flex flex-col h-screen">
+    <Header />
+    <Main class="grow" />
+    <Footer />
+  </div>
 </template>
 
 <style scoped>
