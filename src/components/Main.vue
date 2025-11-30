@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import Greetings from './Greetings.vue';
+import Controls from './Controls.vue';
+
+const unicodeText = ref('');
+const bijoyText = ref('');
 
 const message = ref({
     title: 'Unicode to Bijoy Converter',
@@ -10,12 +14,17 @@ const message = ref({
 
 <template>
     <section class="dark:bg-gray-900 dark-transition">
-        <div class="container mx-auto h-full flex flex-col justify-center items-center">
-            <Greetings :msg="message" />
-            <textarea name="" id="" placeholder="Unicode"></textarea>
-            <div class="border w-full flex justify-center flex-wrap py-2 gap-2">
-                <button class="control-btn">Unicode to Bijoy</button>
-                <button class="control-btn">Bijoy to Unicode</button>
+        <div class="container mx-auto px-6 h-full flex flex-col gap-6 justify-center items-center">
+            <div class="">
+                <!-- <Greetings :msg="message" /> -->
+                 <p class="text-black dark:text-white">Uni: {{ unicodeText }}</p>
+                 <p class="text-black dark:text-white">Bjo: {{ bijoyText }}</p>
+            </div>
+
+            <div class="w-full flex flex-col gap-4">
+                <textarea name="" id="" placeholder="Unicode Text" class="w-full p-2 border rounded text-black dark:bg-gray-800 dark:text-white dark-transition" rows="8" v-model="unicodeText"></textarea>
+                <Controls />
+                <textarea name="" id="" placeholder="Bijoy Text" class="w-full p-2 border rounded text-black dark:bg-gray-800 dark:text-white dark-transition" rows="8" v-model="bijoyText"></textarea>
             </div>
         </div>
     </section>
