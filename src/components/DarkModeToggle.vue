@@ -28,7 +28,7 @@ const toggleTheme = () => {
 <template>
   <button
     @click="toggleTheme"
-    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-white rounded shadow cursor-pointer"
+    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-white rounded shadow cursor-pointer dark-transition"
   >
   <PhSun v-if="isDark" :size="25" />
   <PhMoon v-else :size="25" />
