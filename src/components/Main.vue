@@ -44,7 +44,7 @@
                             </button>
                 <!-- <textarea @input="" name="" id="" placeholder="Bijoy Text" class="w-full p-2 border rounded text-black dark:bg-gray-800 dark:text-white dark-transition" rows="8" v-model="bijoyText"></textarea> -->
                 <textarea id="bijoyText" 
-                class="w-full p-2 border rounded text-black dark:bg-gray-800 dark:text-white dark-transition" 
+                class="w-full p-2 border rounded text-black dark:bg-gray-800 dark:text-white dark-transition font-smj" 
                 rows="8" 
                 v-model="bijoyText" 
                 @input="bijoyToUnicode" 
