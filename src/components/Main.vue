@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Greetings from './Greetings.vue'
 import Controls from './Controls.vue'
 import { ConvertToUnicode, ConvertToASCII } from '../converter';
-import { PhClipboardText, PhBroom, PhArrowBendLeftUp, PhArrowBendRightDown } from '@phosphor-icons/vue';
+import { PhClipboardText } from '@phosphor-icons/vue';
 
 const message = ref({
   title: 'Your Bangla Text Conversion Companion',
