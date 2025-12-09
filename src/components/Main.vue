@@ -1,65 +1,62 @@
 <script setup>
-  import { ref } from 'vue';
-  import Greetings from './Greetings.vue'
-  import Controls from './Controls.vue'
-  import { ConvertToUnicode, ConvertToASCII } from '../converter';
-  import { PhClipboardText, PhBroom, PhArrowBendLeftUp, PhArrowBendRightDown } from '@phosphor-icons/vue';
+import { ref } from 'vue';
+import Greetings from './Greetings.vue'
+import Controls from './Controls.vue'
+import { ConvertToUnicode, ConvertToASCII } from '../converter';
+import { PhClipboardText, PhBroom, PhArrowBendLeftUp, PhArrowBendRightDown } from '@phosphor-icons/vue';
 
-  const message = ref({
-    title: 'Your Bangla Text Conversion Companion',
-    description: 'Convert Bangla text between Unicode and Bijoy formats.'
-  })
+const message = ref({
+  title: 'Your Bangla Text Conversion Companion',
+  description: 'Convert Bangla text between Unicode and Bijoy formats.'
+})
 
-  const bijoyText = ref('');
-  const unicodeText = ref('');
-  const copied = ref(false);
+const bijoyText = ref('');
+const unicodeText = ref('');
+const copiedUnicode = ref(false)
+const copiedBijoy = ref(false)
 
-  const bijoyToUnicode = () => {
-    unicodeText.value = ConvertToUnicode(bijoyText.value);
-  };
+let timer
 
-  const unicodeToBijoy = () => {
-    bijoyText.value = ConvertToASCII(unicodeText.value);
-  };
+const unicodeToBijoy = () => {
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    bijoyText.value = ConvertToASCII(unicodeText.value)
+  }, 300)
+}
 
-  const handleClear = () => {
+const bijoyToUnicode = () => {
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    unicodeText.value = ConvertToUnicode(bijoyText.value)
+  }, 300)
+}
 
-    // bijoyText.value = '';
-    // unicodeText.value = '';
-  };
+const copyUni = () => {
+  navigator.clipboard.writeText(unicodeText.value)
+  copiedUnicode.value = true
+  setTimeout(() => copiedUnicode.value = false, 1000)
+}
+const copyBijoy = () => {
+  navigator.clipboard.writeText(bijoyText.value)
+  copiedBijoy.value = true
+  setTimeout(() => copiedBijoy.value = false, 1000)
+}
 
-  const copyUni = () => {
-    navigator.clipboard.writeText(unicodeText.value);
-    copied.value = true;
-    setTimeout(() => {
-      copied.value = false;
-    }, 1000);
-  }
-
-  const copyBijoy = () => {
-    navigator.clipboard.writeText(bijoyText.value);
-    copied.value = true;
-    setTimeout(() => {
-      copied.value = false;
-    }, 1000);
-  }
-
-  const clearText = () => {
+const clearText = () => {
   const uni = document.querySelector('#unicodeText');
   const bijoy = document.querySelector('#bijoyText');
 
-  // Fade both textareas
+
   uni.classList.add('text-fade-out');
   bijoy.classList.add('text-fade-out');
 
-  // After fade animation, clear AND remove fade class
   setTimeout(() => {
     unicodeText.value = '';
     bijoyText.value = '';
     uni.classList.remove('text-fade-out');
     bijoy.classList.remove('text-fade-out');
-  }, 500);
-  }
+  }, 300);
+}
 </script>
 
 <template>
@@ -72,32 +69,38 @@
       <div class="w-full flex flex-col gap-4">
         <div class="relative">
           <textarea id="unicodeText"
-            class="w-full h-52 p-4 text-lg border border-gray-900 dark:border-gray-200 rounded text-black bg-white dark:bg-gray-800 dark:text-white dark-transition" v-model="unicodeText" @input="unicodeToBijoy"
-            placeholder="ইউনিকোড কি-বোর্ডের লেখা এখানে পেস্ট করুন...">
+            class="w-full h-52 p-4 text-lg border border-gray-900 dark:border-gray-200 rounded text-black bg-white dark:bg-gray-800 dark:text-white dark-transition"
+            v-model="unicodeText" @input="unicodeToBijoy()" placeholder="ইউনিকোড কি-বোর্ডের লেখা এখানে পেস্ট করুন...">
             </textarea>
           <PhClipboardText @click="copyUni" class="absolute top-1 text-black dark:text-gray-300 right-1 cursor-pointer"
-            :class="{ 'text-indigo-500': copied }" :size="26" />
+            :class="{ 'text-indigo-500': copiedUnicode }" :size="26" />
         </div>
 
-         <!-- <Controls /> -->
+        <!-- <Controls /> -->
 
         <div class="w-full flex justify-center flex-wrap py-2 gap-2">
           <button @click="bijoyToUnicode" class="control-btn flex items-center">
-              <PhArrowBendLeftUp :size="25" class="mb-4" /> Bijoy to Unicode
+            <PhArrowBendLeftUp :size="25" class="mb-4" /> Bijoy to Unicode
           </button>
           <button @click="unicodeToBijoy" class="control-btn flex items-center">Unicode to Bijoy
-              <PhArrowBendRightDown :size="25" class="mt-4" />
+            <PhArrowBendRightDown :size="25" class="mt-4" />
           </button>
-          <button @click="clearText" class="flex items-center gap-2 bg-red-600 hover:bg-red-500 cursor-pointer px-4 py-2 rounded text-white text-lgl">Clear Text <PhBroom :size="22" /></button>
+          <button @click="clearText()"
+            class="flex items-center gap-2 bg-red-600 hover:bg-red-500 cursor-pointer px-4 py-2 rounded text-white text-lgl">Clear
+            Text
+            <PhBroom :size="22" />
+          </button>
         </div>
 
         <div class="relative">
           <textarea id="bijoyText"
-            class="w-full h-52 p-4 text-xl border border-gray-900 dark:border-gray-200 rounded text-black dark:bg-gray-800 dark:text-white dark-transition font-smj" v-model="bijoyText" @input="bijoyToUnicode"
+            class="w-full h-52 p-4 text-xl border border-gray-900 dark:border-gray-200 rounded text-black dark:bg-gray-800 dark:text-white dark-transition font-smj"
+            v-model="bijoyText" @input="bijoyToUnicode()"
             placeholder="বিজয় কি-বোর্ডের লেখা এখানে পেস্ট করুন..."></textarea>
 
-          <PhClipboardText @click="copyBijoy" class="absolute top-1 text-black dark:text-gray-300 right-1 cursor-pointer"
-            :class="{ 'text-indigo-500': copied }" :size="26" />
+          <PhClipboardText @click="copyBijoy"
+            class="absolute top-1 text-black dark:text-gray-300 right-1 cursor-pointer"
+            :class="{ 'text-indigo-500': copiedBijoy }" :size="26" />
         </div>
       </div>
     </div>
@@ -106,7 +109,7 @@
 
 
 <style scoped>
-  .text-fade-out {
-    color: transparent;
-  }
+.text-fade-out {
+  color: transparent;
+}
 </style>
