@@ -76,21 +76,7 @@ const clearText = () => {
             :class="{ 'text-indigo-500': copiedUnicode }" :size="26" />
         </div>
 
-        <!-- <Controls /> -->
-
-        <div class="w-full flex justify-center flex-wrap py-2 gap-2">
-          <button @click="bijoyToUnicode" class="control-btn flex items-center">
-            <PhArrowBendLeftUp :size="25" class="mb-4" /> Bijoy to Unicode
-          </button>
-          <button @click="unicodeToBijoy" class="control-btn flex items-center">Unicode to Bijoy
-            <PhArrowBendRightDown :size="25" class="mt-4" />
-          </button>
-          <button @click="clearText()"
-            class="flex items-center gap-2 bg-red-600 hover:bg-red-500 cursor-pointer px-4 py-2 rounded text-white text-lgl">Clear
-            Text
-            <PhBroom :size="22" />
-          </button>
-        </div>
+        <Controls @bijoyToUnicode="bijoyToUnicode" @unicodeToBijoy="unicodeToBijoy" @clearText="clearText" />
 
         <div class="relative">
           <textarea id="bijoyText"
